@@ -8,7 +8,8 @@
                 <div class="panel-heading">Dashboard</div>
 
                 <div class="panel-body">
-                    You are logged in!
+                    You are logged in! Go to <a href="/tasks">tasks page</a>
+                    to start using the app.
                 </div>
             </div>
         </div>
