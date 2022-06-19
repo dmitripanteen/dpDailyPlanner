@@ -14,4 +14,6 @@ Route::get('/', function () {
 });
 //tasks routes
 include __DIR__ . '/sub/tasks.php';
+//category routes
+include __DIR__ . '/sub/categories.php';
 
