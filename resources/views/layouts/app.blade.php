@@ -92,7 +92,11 @@
                             </li>
                         </ul>
                     </li>
-
+                    <li>
+                        <a href="{{ url('/categories') }}">
+                            Categories
+                        </a>
+                    </li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle"
                            data-toggle="dropdown" role="button"
