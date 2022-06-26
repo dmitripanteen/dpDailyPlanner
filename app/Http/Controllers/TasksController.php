@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Task;
 use Auth;
 use Illuminate\Http\Request;
@@ -15,9 +16,9 @@ use Illuminate\Routing\Redirector;
 class TasksController extends Controller
 {
     protected $rules = [
-        'name' 			      => 'required|max:60',
-        'description'   => 'max:155',
-        'completed'    	=> 'numeric',
+        'name'        => 'required|max:60',
+        'description' => 'max:155',
+        'completed'   => 'numeric',
 
     ];
 
@@ -39,9 +40,20 @@ class TasksController extends Controller
         $user = Auth::user();
 
         return view('tasks.index', [
-            'tasks'           => Task::orderBy('created_at', 'asc')->where('user_id', $user->id)->get(),
-            'tasksInComplete' => Task::orderBy('created_at', 'asc')->where('user_id', $user->id)->where('completed', '0')->get(),
-            'tasksComplete'   => Task::orderBy('created_at', 'asc')->where('user_id', $user->id)->where('completed', '1')->get(),
+            'tasks'           => Task::orderBy('created_at', 'asc')
+                ->where('user_id', $user->id)
+                ->get(),
+            'tasksInComplete' => Task::orderBy('created_at', 'asc')
+                ->where('user_id', $user->id)
+                ->where('completed', '0')
+                ->get(),
+            'tasksComplete'   => Task::orderBy('created_at', 'asc')
+                ->where('user_id', $user->id)
+                ->where('completed', '1')
+                ->get(),
+            'categories'      => Category::orderBy('created_at', 'asc')
+                ->where('user_id', $user->id)
+                ->get()
         ]);
     }
 
@@ -53,7 +65,9 @@ class TasksController extends Controller
         $user = Auth::user();
 
         return view('tasks.filtered', [
-            'tasks' => Task::orderBy('created_at', 'asc')->where('user_id', $user->id)->get(),
+            'tasks' => Task::orderBy('created_at', 'asc')
+                ->where('user_id', $user->id)
+                ->get(),
         ]);
     }
 
@@ -65,7 +79,10 @@ class TasksController extends Controller
         $user = Auth::user();
 
         return view('tasks.filtered', [
-            'tasks' => Task::orderBy('created_at', 'asc')->where('user_id', $user->id)->where('completed', '0')->get(),
+            'tasks' => Task::orderBy('created_at', 'asc')
+                ->where('user_id', $user->id)
+                ->where('completed', '0')
+                ->get(),
         ]);
     }
 
@@ -77,7 +94,10 @@ class TasksController extends Controller
         $user = Auth::user();
 
         return view('tasks.filtered', [
-            'tasks' => Task::orderBy('created_at', 'asc')->where('user_id', $user->id)->where('completed', '1')->get(),
+            'tasks' => Task::orderBy('created_at', 'asc')
+                ->where('user_id', $user->id)
+                ->where('completed', '1')
+                ->get(),
         ]);
     }
 
@@ -86,7 +106,13 @@ class TasksController extends Controller
      */
     public function create()
     {
-        return view('tasks.create');
+        $user = Auth::user();
+
+        return view('tasks.create', [
+            'categories' => Category::orderBy('created_at', 'asc')
+                ->where('user_id', $user->id)
+                ->get()
+        ]);
     }
 
     /**
@@ -113,9 +139,19 @@ class TasksController extends Controller
      */
     public function edit($id)
     {
+        $user = Auth::user();
         $task = Task::query()->findOrFail($id);
+        $categories = Category::orderBy('created_at', 'asc')
+            ->where('user_id', $user->id)
+            ->get();
+        foreach ($categories as $category) {
+            $categoriesArr[$category->id] = $category->name;
+        }
 
-        return view('tasks.edit', compact('task'));
+        return view('tasks.edit', [
+            'task'       => $task,
+            'categories' => $categoriesArr ?? []
+        ]);
     }
 
     /**
@@ -132,7 +168,8 @@ class TasksController extends Controller
         $task = Task::findOrFail($task->id);
         $task->name = $request->input('name');
         $task->description = $request->input('description');
-        $task->completed = $request->input('completed');
+        $task->completed = $request->input('completed') ?? 0;
+        $task->category_id = $request->input('category_id') ?? null;
         $task->save();
 
         return redirect('tasks')->with('success', 'Task Updated');

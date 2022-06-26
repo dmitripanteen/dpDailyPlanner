@@ -9,6 +9,14 @@
         {{ $task->description }}
     </td>
     <td>
+        @if($task->category_id)
+            <span class="badge badge-secondary"
+                  style="background-color:{{$categories[$task->category_id]->colorScheme[$categories[$task->category_id]->color] }};color:#fff">
+                {{ $categories[$task->category_id]->name }}
+            </span>
+        @endif
+    </td>
+    <td>
         @if ($task->completed === 1)
             <span class="label label-success">Complete</span>
         @else

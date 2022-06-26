@@ -17,6 +17,20 @@
     </div>
 </div>
 <div class="form-group">
+    <label for="task-category"
+           class="col-sm-3 control-label">Category</label>
+
+    <div class="col-sm-6">
+        <select name="category_id" id="task-category" class="form-control"
+                aria-label="Select category">
+            <option disabled selected>Select category</option>
+            @foreach ($categories as $category)
+                <option value="{{$category->id}}">{{$category->name}}</option>
+            @endforeach
+        </select>
+    </div>
+</div>
+<div class="form-group">
     <div class="col-sm-offset-3 col-sm-6">
         {{Form::button('<span class="fa fa-plus fa-fw" aria-hidden="true"></span> Create Task', array('type' => 'submit', 'class' => 'btn btn-default'))}}
     </div>

@@ -23,6 +23,27 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            {!! Form::label(
+                                'category_id',
+                                'Category',
+                                [
+                                    'class' => 'col-sm-3 col-sm-offset-1 control-label text-right'
+                                ]
+                                ) !!}
+                            <div class="col-sm-6">
+                                {!! Form::select('category_id',
+                                    array_merge(
+                                        ['' => 'Select category'],
+                                        $categories
+                                        ),
+                                    $task->category_id,
+                                    [
+                                        'class'  => 'form-control'
+                                    ]
+                                    ) !!}
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label for="status"
                                    class="col-sm-3 col-sm-offset-1 control-label text-right">Status</label>
                             <div class="col-sm-6">

@@ -65,7 +65,6 @@ class CategoriesController extends Controller
         $user = Auth::user();
         $category = $request->all();
         $category['user_id'] = $user->id;
-//        var_dump($category);die();
         Category::create($category);
 
         return redirect('/categories')->with('success', 'Category created');

@@ -8,6 +8,7 @@
                 <th>ID</th>
                 <th>Name</th>
                 <th>Description</th>
+                <th>Category</th>
                 <th colspan="3">Status</th>
             </thead>
             <tbody>
